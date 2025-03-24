@@ -19,7 +19,7 @@ export const closeModal = (modal) => {
   // удалить слушатель на кнопку Escape
 }
 
-export const addEvent = (popupElement) => {
+export const addClosePopupListeners = (popupElement) => {
   const closeBtn = popupElement.querySelector('.popup__close');
  // ищем кнопку крестик в попапе
   closeBtn.addEventListener("click", () => {

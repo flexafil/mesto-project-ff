@@ -1,7 +1,7 @@
 import '../pages/index.css';
 import { initialCards } from './cards';
 import { createCard, deleteCardButton, handleLikeCard } from '../components/card';
-import { openModal, closeModal, addEvent } from '../components/modal';
+import { openModal, closeModal, addClosePopupListeners } from '../components/modal';
 
 const cardContainer = document.querySelector('.places__list');
 
@@ -24,11 +24,13 @@ initialCards.forEach(cardData => {
   cardContainer.append(newCard);
 });
 
+newCard.addEventListener("click", handleLikeCard);
+
 const popupEdit = document.querySelector('.popup_type_edit');
 const popupImage = document.querySelector('.popup_type_image');
 
-addEvent(popupEdit);
-addEvent(popupImage);
+addClosePopupListeners(popupEdit);
+addClosePopupListeners(popupImage);
 
 const editButton = document.querySelector('.profile__edit-button');
 const imageButton = document.querySelector('.popup__content_content_image');
@@ -44,10 +46,10 @@ imageButton.addEventListener("click", () => openModal(popupImage));
 const profileName = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
 // Находим форму в DOM
-const formElement = document.querySelector('.popup__form_edit-profile');
+const formElementEditProfile = document.querySelector('.popup__form_edit-profile');
 // Находим поля формы в DOM
-const nameInput = formElement.querySelector('.popup__input_type_name');
-const jobInput = formElement.querySelector('.popup__input_type_description');
+const nameInput = formElementEditProfile.querySelector('.popup__input_type_name');
+const jobInput = formElementEditProfile.querySelector('.popup__input_type_description');
 
 // Обработчик «отправки» формы, хотя пока
 // она никуда отправляться не будет
@@ -70,11 +72,11 @@ function handleFormSubmit(evt) {
 
 // Прикрепляем обработчик к форме:
 // он будет следить за событием “submit” - «отправка»
-formElement.addEventListener('submit', handleFormSubmit); 
+formElementEditProfile.addEventListener('submit', handleFormSubmit); 
 
 // //шаг 5
 const popupNewCard = document.querySelector('.popup_type_new-card');
-addEvent(popupNewCard);
+addClosePopupListeners(popupNewCard);
 const newCardButton = document.querySelector('.profile__add-button');
 newCardButton.addEventListener("click", () => openModal(popupNewCard));
 
