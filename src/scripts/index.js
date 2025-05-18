@@ -2,6 +2,7 @@ import '../pages/index.css';
 import { initialCards } from './cards';
 import { createCard, deleteCardButton, handleLikeCard } from '../components/card';
 import { openModal, closeModal, addClosePopupListeners } from '../components/modal';
+import { enableValidation, clearValidation } from '../components/validation';
 
 const cardContainer = document.querySelector('.places__list');
 
@@ -24,13 +25,13 @@ initialCards.forEach(cardData => {
   cardContainer.append(newCard);
 });
 
-newCard.addEventListener("click", handleLikeCard);
-
 const popupEdit = document.querySelector('.popup_type_edit');
 const popupImage = document.querySelector('.popup_type_image');
 
 addClosePopupListeners(popupEdit);
 addClosePopupListeners(popupImage);
+
+popupImage.addEventListener('click', () => closeModal(popupImage));
 
 const editButton = document.querySelector('.profile__edit-button');
 const imageButton = document.querySelector('.popup__content_content_image');
@@ -38,6 +39,7 @@ const imageButton = document.querySelector('.popup__content_content_image');
 editButton.addEventListener("click", () => {
   nameInput.value = profileName.textContent;
   jobInput.value = profileDescription.textContent;
+  clearValidation(formElementEditProfile);
   openModal(popupEdit);
 })
 imageButton.addEventListener("click", () => openModal(popupImage));
@@ -74,16 +76,32 @@ function setSubmitFormEdit (evt) {
 // он будет следить за событием “submit” - «отправка»
 formElementEditProfile.addEventListener('submit', setSubmitFormEdit); 
 
-// //шаг 5
 const popupNewCard = document.querySelector('.popup_type_new-card');
 addClosePopupListeners(popupNewCard);
 const newCardButton = document.querySelector('.profile__add-button');
-newCardButton.addEventListener("click", () => openModal(popupNewCard));
+newCardButton.addEventListener("click", () => {
+  newPlaceName.value = "";
+  newPlaceUrl.value = "";
+  openModal(popupNewCard);
+  clearValidation(formElementNewCard);
+});
 
-// //шаг 6
-const newPlaceName = document.querySelector('.popup__input_type_card-name');
-const newPlaceUrl = document.querySelector('.popup__input_type_url');
 const formElementNewCard = document.querySelector('.popup__form_new-place');
+const newPlaceName = formElementNewCard.querySelector('.popup__input_type_card-name');
+const newPlaceUrl = formElementNewCard.querySelector('.popup__input_type_url');
+
+// const formEditProfile = document.querySelector('.popup__form_edit-profile');
+// const profileNameInput = formEditProfile.querySelector('.popup__input_type_name');
+// const profileDescriptionInput = formEditProfile.querySelector('.popup__input_type_description');
+
+enableValidation({
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible'
+});  
 
 function handleAddCardSubmit (evt) {
   evt.preventDefault();
@@ -99,6 +117,7 @@ function handleAddCardSubmit (evt) {
   closeModal(popupNewCard);
 
   formElementNewCard.reset();
+  clearValidation(formElementNewCard);
 }
 
 formElementNewCard.addEventListener('submit', handleAddCardSubmit);
