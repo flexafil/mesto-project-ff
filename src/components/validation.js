@@ -13,11 +13,11 @@ const hideInputError = (formElement, inputElement) => {
   errorElement.textContent = '';
 };
 
-const validationConfig = {
+export const validationConfig = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
   submitButtonSelector: '.popup__button',
-  fieldsWithCustomValidation: ['place-input', 'name-input']
+  fieldsWithCustomValidation: ['place-input', 'name-input', 'avatar-url-input']
 };
 
 // Функция, которая проверяет валидность поля
