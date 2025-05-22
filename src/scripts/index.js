@@ -108,7 +108,7 @@ formElementNewCard.addEventListener('submit', (evt) => {
 
   createNewCard(cardData)
   .then((data) => {  
-  const newCard = createCard({ name: data.name, link: data.link, likes: data.likes, ownerId: data.owner._id, id: data._id  }, deleteCardButton, handleLikeCard, handleOpenImagePopup);
+  const newCard = createCard({ name: data.name, link: data.link, likes: data.likes, ownerId: data.owner._id, id: data._id  }, deleteCardButton, handleLikeCard, handleOpenImagePopup, userId);
   cardContainer.prepend(newCard);
 
   closeModal(popupNewCard);
@@ -149,10 +149,10 @@ const newAvatarData = {
   avatar: 'https://i.pinimg.com/originals/6a/1b/7f/6a1b7f79a89349b03acd36c89c22068a.jpg'
 }
 
-// let userId = null;
+let userId = null;
 Promise.all([getUserData(), getAllCards(), editAvatar(newAvatarData)])
   .then(([userData, cards, avatarData]) => {
-    // userId = userData._id;
+    userId = userData._id;
 
     profileName.textContent = userData.name;
     profileDescription.textContent = userData.about;
@@ -160,7 +160,7 @@ Promise.all([getUserData(), getAllCards(), editAvatar(newAvatarData)])
     avatarInput.value = avatarData.avatar;
 
     cards.forEach(data => {
-      const newCard = createCard({ name: data.name, link: data.link, likes: data.likes, ownerId: data.owner._id, id: data._id }, deleteCardButton, handleLikeCard, handleOpenImagePopup);
+      const newCard = createCard({ name: data.name, link: data.link, likes: data.likes, ownerId: data.owner._id, id: data._id }, deleteCardButton, handleLikeCard, handleOpenImagePopup, userId);
       cardContainer.append(newCard);
     });
   })
